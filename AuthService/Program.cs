@@ -30,10 +30,10 @@ builder.Services.AddIdentity<User, IdentityRole>()
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Configurar o serviço Mediatr
-builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<Program>());
+//builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<Program>());
 
 // Configurar o serviço do fluen validation para validação dos dados
-builder.Services.AddFluentValidationAutoValidation();
+//builder.Services.AddFluentValidationAutoValidation();
 
 //Configurar o JWT
 builder.Services.AddAuthentication(options =>
@@ -57,6 +57,8 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+//builder.Services.AddAuthorizationBuilder();
+
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TokenService>();
 
@@ -76,9 +78,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseAuthentication(); //JWT
+
+app.UseAuthorization();
 
 app.MapControllers();
 

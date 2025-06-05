@@ -19,15 +19,17 @@ namespace AuthService.Services
             {
                 new Claim("username", user.UserName),
                 new Claim("id", user.Id),
-                new Claim("email", user.Email),
+                //new Claim("email", user.Email),
                 new Claim("birthDate", user.BirthDate.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SymmetricSecurityKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
             var signInCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                expires: DateTime.Now.AddMinutes(10),
+                audience: _configuration["JWT:Audience"],
+                issuer: _configuration["JWT:Issuer"],
+                expires: DateTime.UtcNow.AddMinutes(10),
                 claims: claims,
                 signingCredentials: signInCredentials
                 );
