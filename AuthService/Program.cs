@@ -11,7 +11,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 //Procura no appsettings.json o valor da chave DefaultConnection contida em connectionStrings
-var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
+var connectionString = builder.Configuration["ConnectionStrings:default"];
 
 
 // Add services to the container.
@@ -25,6 +25,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<UserDbContext>()
     .AddDefaultTokenProviders();
+
 
 // Configurar o Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

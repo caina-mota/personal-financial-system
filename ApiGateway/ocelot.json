@@ -16,7 +16,7 @@
       "UpstreamHttpMethod": [ "GET", "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/WeatherForecast",
+      "DownstreamPathTemplate": "/api/Expenses/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -24,8 +24,28 @@
           "Port": 5039
         }
       ],
-      "UpstreamPathTemplate": "/teste",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamPathTemplate": "/finance/myexpenses/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Category/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5039
+        }
+      ],
+      "UpstreamPathTemplate": "/finance/categories/{everything}",
+      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     }
   ]
 }

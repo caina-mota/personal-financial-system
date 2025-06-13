@@ -12,7 +12,7 @@ using PersonalFinancialSystem.Data;
 namespace PersonalFinancialSystem.Migrations
 {
     [DbContext(typeof(ExpensesContext))]
-    [Migration("20250611014439_InitialMigration")]
+    [Migration("20250612214058_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -31,26 +31,14 @@ namespace PersonalFinancialSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ExpenseId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid?>("RevenueId")
-                        .HasColumnType("uuid");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExpenseId")
-                        .IsUnique();
-
-                    b.HasIndex("RevenueId")
-                        .IsUnique();
 
                     b.ToTable("Categories");
                 });
@@ -64,6 +52,9 @@ namespace PersonalFinancialSystem.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
@@ -75,6 +66,8 @@ namespace PersonalFinancialSystem.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Expenses");
                 });
@@ -88,11 +81,13 @@ namespace PersonalFinancialSystem.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
@@ -100,30 +95,31 @@ namespace PersonalFinancialSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Revenues");
-                });
-
-            modelBuilder.Entity("PersonalFinancialSystem.Models.Category", b =>
-                {
-                    b.HasOne("PersonalFinancialSystem.Models.Expense", null)
-                        .WithOne("Category")
-                        .HasForeignKey("PersonalFinancialSystem.Models.Category", "ExpenseId");
-
-                    b.HasOne("PersonalFinancialSystem.Models.Revenue", null)
-                        .WithOne("Category")
-                        .HasForeignKey("PersonalFinancialSystem.Models.Category", "RevenueId");
                 });
 
             modelBuilder.Entity("PersonalFinancialSystem.Models.Expense", b =>
                 {
-                    b.Navigation("Category")
+                    b.HasOne("PersonalFinancialSystem.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("PersonalFinancialSystem.Models.Revenue", b =>
                 {
-                    b.Navigation("Category")
+                    b.HasOne("PersonalFinancialSystem.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

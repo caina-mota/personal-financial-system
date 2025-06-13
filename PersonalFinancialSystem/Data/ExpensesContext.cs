@@ -14,13 +14,15 @@ namespace PersonalFinancialSystem.Data
         {
             modelBuilder.Entity<Expense>()
                 .HasOne(e => e.Category)
-                .WithOne()
-                .HasForeignKey<Category>("ExpenseId");
+                .WithMany()
+                .HasForeignKey(e => e.CategoryId)
+                .IsRequired();
 
             modelBuilder.Entity<Revenue>()
                 .HasOne(r => r.Category)
-                .WithOne()
-                .HasForeignKey<Category>("RevenueId");
+                .WithMany()
+                .HasForeignKey(r => r.CategoryId)
+                .IsRequired();
         }
 
         public DbSet<Expense> Expenses { get; set; }
